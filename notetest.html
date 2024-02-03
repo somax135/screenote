@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma Notes App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ecdd55; /* Couleur orange */
+            color: #333;
+        }
+
+        header {
+            background-color: #ecdd55; /* Couleur orange foncée */
+            color: #fff; /* Texte en blanc */
+            padding: 15px;
+            text-align: center;
+        }
+
+        main {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h2, h3 {
+            color: #D9B70D; /* Couleur orange foncée */
+        }
+        h1 {
+            color: #D9B70D; /* Couleur orange foncée */
+            cursor: ;
+        }
+
+
+        #notes {
+            margin-top: 20px;
+        }
+
+        .note {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: #fff; /* Couleur orange claire */
+        }
+
+        #ajouterNote {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #D9B70D; /* Couleur orange foncée */
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #D9B70D; /* Couleur orange foncée */
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 0px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #BF8D30; /* Couleur orange foncée (légèrement plus sombre) au survol */
+        }
+
+        /* Ajout du style pour conserver les retours à la ligne */
+        .note p {
+            white-space: pre-line;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Screenote</h1>
+    </header>
+
+    <main>
+        <section id="ajouterNote">
+            <h2>Ajouter une Note</h2>
+            <form id="formulaireNote">
+                <label for="titre">Titre :</label>
+                <input type="text" id="titre" name="titre" required>
+
+                <label for="contenu">Contenu :</label>
+                <textarea id="contenu" name="contenu" required></textarea>
+
+                <button type="button" onclick="ajouterNote()">Ajouter</button>
+                <button type="button" onclick="ajouterListe()">Ajouter une liste</button>
+            </form>
+        </section>
+
+        <section id="notes">
+            <!-- La liste des notes va ici -->
+        </section>
+    </main>
+
+    <script>
+        function ajouterNote() {
+            // Récupérer les valeurs des champs
+            var titre = document.getElementById('titre').value;
+            var contenu = document.getElementById('contenu').value;
+
+            // Créer un élément div pour représenter la note
+            var nouvelleNote = document.createElement('div');
+            nouvelleNote.className = 'note';
+
+            // Remplir la note avec le titre, le contenu et les boutons de modification et suppression
+            nouvelleNote.innerHTML = '<h3>' + titre + '</h3><p>' + contenu + '</p>' +
+                '<button onclick="modifierNote(this)">Modifier</button>' +
+                '<button onclick="supprimerNote(this)">Supprimer</button>';
+
+            // Ajouter la note à la section des notes
+            document.getElementById('notes').appendChild(nouvelleNote);
+
+            // Effacer les champs du formulaire
+            document.getElementById('titre').value = '';
+            document.getElementById('contenu').value = '';
+        }
+
+        function supprimerNote(element) {
+            // Supprimer la note parente de l'élément bouton
+            var noteASupprimer = element.parentNode;
+            noteASupprimer.parentNode.removeChild(noteASupprimer);
+        }
+
+        function modifierNote(element) {
+            // Récupérer la note parente de l'élément bouton
+            var noteAModifier = element.parentNode;
+
+            // Récupérer le titre et le contenu de la note
+            var titre = noteAModifier.querySelector('h3').innerText;
+            var contenu = noteAModifier.querySelector('p').innerText;
+
+            // Remplir les champs du formulaire avec les valeurs actuelles de la note
+            document.getElementById('titre').value = titre;
+            document.getElementById('contenu').value = contenu;
+
+            // Supprimer la note existante
+            noteAModifier.parentNode.removeChild(noteAModifier);
+        }
+
+        function ajouterListe() {
+            // Récupérer le contenu actuel du champ de contenu
+            var contenuActuel = document.getElementById('contenu').value;
+
+            // Ajouter une puce à la fin du contenu
+            document.getElementById('contenu').value = contenuActuel + '\n- ';
+
+            // Mettre le focus sur le champ de contenu
+            document.getElementById('contenu').focus();
+        }
+    </script>
+
+</body>
+</html>
